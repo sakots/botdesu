@@ -12,6 +12,8 @@ import datetime
 import schedule
 import time
 
+# ボットデス ver0.9.9 by さこつ
+
 # .envファイルの内容を読み込み
 load_dotenv()
 
@@ -24,7 +26,7 @@ mstdn = Mastodon(
     api_base_url = os.getenv('MASTODON_URL'))
 
 def job_a():
-    Search_words()
+    Search()
     print("***はつげんをひろったよ***")
 
 def job_b():
@@ -37,11 +39,11 @@ def job_c():
 
 schedule.every(237).minutes.do(job_c)
 schedule.every(15).minutes.do(job_a)
-schedule.every(60).minutes.do(job_b)
+schedule.every(666).minutes.do(job_b)
 
-search_words = 'ボットデス'
+search = 'ボットデス'
 
-def Search_words():
+def Search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
     for line in timeline:
         if line['account']['username'] != bot_acount_id:
