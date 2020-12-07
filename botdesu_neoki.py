@@ -25,32 +25,6 @@ mstdn = Mastodon(
 	client_secret = os.getenv('MASTODON_CLIENT_SECRET'),
     api_base_url = os.getenv('MASTODON_URL'))
 
-def job_a():
-    Search()
-    print("***はつげんをひろったよ***")
-
-def job_b():
-    Mecab_file()
-    print("***はつげんしたよ***")
-
-def job_c():
-    Del_text()
-    print("***ログをけしたよ***")
-
-schedule.every(997).minutes.do(job_c)
-schedule.every(17).minutes.do(job_a)
-schedule.every(113).minutes.do(job_b)
-
-def Search():
-    timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
-    for line in timeline:
-        if line['account']['username'] != bot_acount_id:
-            f = open("toot.txt" , "a")
-            lists = (line['content'].replace("\n", ""))
-            f.write(lists)
-            f.flush()
-            f.close()
-
 def Mecab_file():
     f = open("toot.txt","r")
     data = f.read()
@@ -93,21 +67,4 @@ def Mecab_file():
 
     mstdn.toot(words)
 
-def Del_text():
-    os.remove("toot.txt")
-    f = open('toot.txt','w')
-    f.close()
-    timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
-    for line in timeline:
-        if line['account']['username'] != bot_acount_id:
-            f = open("toot.txt" , "a")
-            lists = (line['content'].replace("\n", ""))
-            f.write(lists)
-            f.flush()
-            f.close()
-
-
-while True:
-  schedule.run_pending()
-  print("***ようすをみている***")
-  time.sleep(120)
+Mecab_file()

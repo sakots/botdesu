@@ -8,5 +8,5 @@ do
     if [ $count = 0 ]; then
         bash botdesu.sh
     fi
-    sleep 1800 #モニタ間隔（秒単位）
+    sleep 1200 #モニタ間隔（秒単位）
 done
