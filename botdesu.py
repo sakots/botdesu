@@ -12,7 +12,7 @@ import datetime
 import schedule
 import time
 
-# ボットデス v0.9.10 lot.201207.1
+# ボットデス v0.9.11 lot.201207.2
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -40,8 +40,6 @@ def job_c():
 schedule.every(997).minutes.do(job_c)
 schedule.every(17).minutes.do(job_a)
 schedule.every(113).minutes.do(job_b)
-
-search = 'ボットデス'
 
 def Search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
@@ -112,4 +110,4 @@ def Del_text():
 while True:
   schedule.run_pending()
   print("***ようすをみている***")
-  time.sleep(180)
+  time.sleep(120)
