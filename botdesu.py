@@ -12,7 +12,7 @@ import datetime
 import schedule
 import time
 
-# ボットデス ver0.9.9 by さこつ
+# ボットデス v0.9.10 lot.201207.1
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -37,9 +37,9 @@ def job_c():
     Del_text()
     print("***ログをけしたよ***")
 
-schedule.every(237).minutes.do(job_c)
-schedule.every(15).minutes.do(job_a)
-schedule.every(666).minutes.do(job_b)
+schedule.every(997).minutes.do(job_c)
+schedule.every(17).minutes.do(job_a)
+schedule.every(113).minutes.do(job_b)
 
 search = 'ボットデス'
 
