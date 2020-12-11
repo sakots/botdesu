@@ -12,7 +12,7 @@ import datetime
 import schedule
 import time
 
-# ボットデス v0.9.12 lot.201207.3
+# ボットデス v0.9.13 lot.201212.0
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -53,7 +53,7 @@ def Mecab_file():
     sentence = ""
     count = 0
 
-    numm = random.randint(30,50)
+    numm = random.randint(13,56)
     while count < numm:
         sentence += choice_words
         choice_words = random.choice(markov[choice_words])

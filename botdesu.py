@@ -12,7 +12,7 @@ import datetime
 import schedule
 import time
 
-# ボットデス v0.9.12 lot.201207.3
+# ボットデス v0.9.13 lot.201212.0
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -37,9 +37,9 @@ def job_c():
     Del_text()
     print("***ログをけしたよ***")
 
-schedule.every(997).minutes.do(job_c)
+# schedule.every(997).minutes.do(job_c)
 schedule.every(17).minutes.do(job_a)
-schedule.every(113).minutes.do(job_b)
+schedule.every(random.randint(3,173)).minutes.do(job_b)
 
 def Search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
@@ -79,7 +79,7 @@ def Mecab_file():
     sentence = ""
     count = 0
 
-    numm = random.randint(30,50)
+    numm = random.randint(31,56)
     while count < numm:
         sentence += choice_words
         choice_words = random.choice(markov[choice_words])
