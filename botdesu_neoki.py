@@ -12,7 +12,7 @@ import datetime
 import schedule
 import time
 
-# ボットデス v0.9.13 lot.201212.0
+# ボットデス v0.9.14 lot.201212.1
 
 # .envファイルの内容を読み込み
 load_dotenv()

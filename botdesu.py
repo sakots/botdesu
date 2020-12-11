@@ -12,7 +12,7 @@ import datetime
 import schedule
 import time
 
-# ボットデス v0.9.13 lot.201212.0
+# ボットデス v0.9.14 lot.201212.1
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -25,21 +25,21 @@ mstdn = Mastodon(
 	client_secret = os.getenv('MASTODON_CLIENT_SECRET'),
     api_base_url = os.getenv('MASTODON_URL'))
 
-def job_a():
+def job_a_search():
     Search()
     print("***はつげんをひろったよ***")
 
-def job_b():
+def job_b_toot():
     Mecab_file()
     print("***はつげんしたよ***")
 
-def job_c():
+def job_c_deltxt():
     Del_text()
     print("***ログをけしたよ***")
 
-# schedule.every(997).minutes.do(job_c)
-schedule.every(17).minutes.do(job_a)
-schedule.every(random.randint(3,173)).minutes.do(job_b)
+# schedule.every(997).minutes.do(job_c_deltxt)
+schedule.every(17).minutes.do(job_a_search)
+schedule.every(127).minutes.do(job_b_toot)
 
 def Search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
@@ -93,6 +93,7 @@ def Mecab_file():
 
     mstdn.toot(words)
 
+# 今は使っていないのでテキストはどんどん溜まっていく仕様
 def Del_text():
     os.remove("toot.txt")
     f = open('toot.txt','w')
@@ -109,5 +110,9 @@ def Del_text():
 
 while True:
   schedule.run_pending()
-  print("***ようすをみている***")
-  time.sleep(120)
+  iraira = random.randint(3,311)
+  if iraira < 23:
+      iraira = random.randint(31,101)
+    
+  print("***ようすをみている*** 次" + str(iraira) + "秒後")
+  time.sleep(iraira)
