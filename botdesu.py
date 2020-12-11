@@ -108,7 +108,7 @@ while True:
     time.sleep(600)
     job_a_search()
     toot_count += random.randint(97,311)
-    iraira = random.randint(1433,3571)
+    iraira = random.randint(199,3571)
     if toot_count > iraira:
         job_b_toot()
         toot_count = 0
