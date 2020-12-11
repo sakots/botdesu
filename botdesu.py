@@ -9,10 +9,9 @@ import os
 from dotenv import load_dotenv
 
 import datetime
-import schedule
 import time
 
-# ボットデス v0.9.14 lot.201212.1
+# ボットデス by さこつ
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -36,10 +35,6 @@ def job_b_toot():
 def job_c_deltxt():
     Del_text()
     print("***ログをけしたよ***")
-
-# schedule.every(997).minutes.do(job_c_deltxt)
-schedule.every(17).minutes.do(job_a_search)
-schedule.every(127).minutes.do(job_b_toot)
 
 def Search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
@@ -107,12 +102,14 @@ def Del_text():
             f.flush()
             f.close()
 
-
 while True:
-  schedule.run_pending()
-  iraira = random.randint(3,311)
-  if iraira < 23:
-      iraira = random.randint(31,101)
-    
-  print("***ようすをみている*** 次" + str(iraira) + "秒後")
-  time.sleep(iraira)
+    toot_count = random.randint(0,13)
+    print("***ようすをみている***")
+    time.sleep(600)
+    job_a_search()
+    toot_count += random.randint(97,311)
+    iraira = random.randint(1433,3571)
+    if toot_count > iraira:
+        job_b_toot()
+        toot_count = 0
+
