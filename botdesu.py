@@ -12,6 +12,7 @@ import datetime
 import time
 
 # ボットデス by さこつ
+# このファイル自体は今は使ってないです。動かないし。
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -102,22 +103,25 @@ def Del_text():
             f.flush()
             f.close()
 
+try:
+    toot_count
+except NameError:
+    toot_count = random.randint(1,13)
+try:
+    iraira
+except NameError:
+    iraira = random.randint(199,3571)
+
 while True:
-    try:
-        toot_count
-    except NameError:
-        toot_count = random.randint(1,13)
+    see = 0
+    while see < 10: 
+        print("***ようすをみている***" + " - c" + str(toot_count) + ":" + "i" + str(iraira))
+        time.sleep(60)
+        see += 1
 
-    try:
-        iraira
-    except NameError:
-        iraira = random.randint(199,3571)
-
-    print("***ようすをみている***" + " - c" + str(toot_count) + ":" + "i" + str(iraira))
-    time.sleep(600)
     job_a_search()
     toot_count += random.randint(97,311)
     if toot_count > iraira:
         job_b_toot()
-        toot_count = random.randint(1,77)
-        iraira = random.randint(199,3571)
+        toot_count = random.randint(1,23)
+        iraira = random.randint(random.randint(1,223),random.randint(1033,5005))

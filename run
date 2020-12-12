@@ -1,12 +1,3 @@
 #!/bin/bash
 
-while true
-do
-    #botdesu.pyが何個起動しているかカウントする
-    count=`ps -ef | grep python botdesu.py | grep -v grep | wc -l`
-    #監視するbotdesu.pyが0個の場合、ダウンしているので起動
-    if [ $count = 0 ]; then
-        bash botdesu.sh
-    fi
-    sleep 1200 #モニタ間隔（秒単位）
-done
+bash botdesu.sh
