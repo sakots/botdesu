@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "ボットデス v0.10.1 lot.201212.8 by さこつ"
+echo "ボットデス v0.10.2 lot.201212.9 by さこつ"
 # とりあえず起動したらトゥート
 python3 botdesu_neoki.py
 # 乱数取得
@@ -14,10 +14,10 @@ do
     echo "***ようすをみている***"
     sleep 600
     # カウントをテキトーに増やす
-    $((toot_count+=$((($RANDOM % 214)+97)))) #97~311くらいふえる
-    $((iraira+=$((($RANDOM % 2396)+35)))) #35~2431くらいふえる
+    toot_count+=$((($RANDOM % 214)+97)) #97~311くらいふえる
+    iraira+=$((($RANDOM % 2396)+35)) #35~2431くらいふえる
     # イライラ値がこえた！
-    if [ "$(toot_count)" -gt "$(iraira)" ] ; then
+    if [ $(toot_count) -gt $(iraira) ] ; then
         # とぅーとする
         python3 botdesu_toot.py
         # カウントリセット
