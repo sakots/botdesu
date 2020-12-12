@@ -1,6 +1,6 @@
 # ボットデスくん
 
-![私がボットデス](https://github.com/sakots/botdesu/blob/0.9/ico.png?raw=true)
+![私がボットデス](https://github.com/sakots/botdesu/blob/main/ico.png?raw=true)
 
 ポケモンマストドン「[ポケマス](https://pokemon.mastportal.info/)」のさらに一部界隈で有名な、pythonで動くマストドンのマルコフ連鎖botです。
 
