@@ -102,14 +102,14 @@ def Del_text():
             f.flush()
             f.close()
 
+toot_count:int
+iraira = random.randint(199,3571)
 while True:
-    toot_count = random.randint(0,13)
     print("***ようすをみている***")
     time.sleep(600)
     job_a_search()
     toot_count += random.randint(97,311)
-    iraira = random.randint(199,3571)
     if toot_count > iraira:
         job_b_toot()
         toot_count = 0
-
+        iraira = random.randint(199,3571)
