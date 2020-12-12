@@ -113,7 +113,7 @@ while True:
     except NameError:
         iraira = random.randint(199,3571)
 
-    print("***ようすをみている***" + " - c" + toot_count + ":" + "i" + iraira)
+    print("***ようすをみている***" + " - c" + str(toot_count) + ":" + "i" + str(iraira))
     time.sleep(600)
     job_a_search()
     toot_count += random.randint(97,311)
