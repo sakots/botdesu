@@ -9,7 +9,6 @@ import os
 from dotenv import load_dotenv
 
 import datetime
-import schedule
 import time
 
 # ボットデス by さこつ
