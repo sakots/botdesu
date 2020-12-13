@@ -24,19 +24,16 @@ mstdn = Mastodon(
 	client_secret = os.getenv('MASTODON_CLIENT_SECRET'),
     api_base_url = os.getenv('MASTODON_URL'))
 
+try:
+    toot_count
+except NameError:
+    toot_count = random.randint(1,13)
+try:
+    iraira
+except NameError:
+    iraira = random.randint(199,3571)
+
 def job_a_search():
-    Search()
-    print("***はつげんをひろったよ***")
-
-def job_b_toot():
-    Mecab_file()
-    print("***はつげんしたよ***")
-
-def job_c_deltxt():
-    Del_text()
-    print("***ログをけしたよ***")
-
-def Search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
     for line in timeline:
         if line['account']['username'] != bot_acount_id:
@@ -46,7 +43,7 @@ def Search():
             f.flush()
             f.close()
 
-def Mecab_file():
+def job_b_toot():
     f = open("toot.txt","r")
     data = f.read()
     f.close()
@@ -88,41 +85,31 @@ def Mecab_file():
 
     mstdn.toot(words)
 
-# 今は使っていないのでテキストはどんどん溜まっていく仕様
-def Del_text():
-    os.remove("toot.txt")
-    f = open('toot.txt','w')
-    f.close()
-    timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
-    for line in timeline:
-        if line['account']['username'] != bot_acount_id:
-            f = open("toot.txt" , "a")
-            lists = (line['content'].replace("\n", ""))
-            f.write(lists)
-            f.flush()
-            f.close()
-
-try:
-    toot_count
-except NameError:
-    toot_count = random.randint(1,13)
-try:
-    iraira
-except NameError:
-    iraira = random.randint(199,3571)
+def iraira_calc():
+    global iraira_rate
+    iraira_rate = float( toot_count / iraira ) * 100
+    iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
 
 while True:
+    iraira_calc()
     see = 0
-    while see < 10: 
+    print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+    while see < 9: 
         print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "]")
         time.sleep(60)
         see += 1
 
     job_a_search()
     toot_count += random.randint(97,311)
+    iraira_calc()
+    print("***はつげんをひろったよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
     if toot_count > iraira:
         job_b_toot()
         toot_count = random.randint(1,23)
-        iraira = random.randint(random.randint(1,223),random.randint(1033,5005))
+        iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
+        iraira_calc()
+        print("***はつげんしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
     else:
-        print("***はつげんしたかった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "]")
+        toot_count += random.randint(1,47)
+        iraira_calc()
+        print("***はつげんしたかったよ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
