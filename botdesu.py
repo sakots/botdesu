@@ -90,11 +90,12 @@ def iraira_calc():
     iraira_rate = float( toot_count / iraira ) * 100
     iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
 
+iraira_calc()
+print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+
 while True:
-    iraira_calc()
     see = 0
-    print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
-    while see < 9: 
+    while see < 10: 
         print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "]")
         time.sleep(60)
         see += 1
@@ -110,6 +111,6 @@ while True:
         iraira_calc()
         print("***はつげんしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
     else:
-        toot_count += random.randint(1,47)
+        toot_count += (71 - random.randint(1,97))
         iraira_calc()
         print("***はつげんしたかったよ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)

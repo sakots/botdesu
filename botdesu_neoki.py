@@ -24,6 +24,20 @@ mstdn = Mastodon(
 	client_secret = os.getenv('MASTODON_CLIENT_SECRET'),
     api_base_url = os.getenv('MASTODON_URL'))
 
+# 初回起動時とかtoot.txtがないときは作成して1回収集
+if not os.path.exists("toot.txt"):
+    f = open("toot.txt",'w')
+    f.write("")
+    f.close()
+    timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
+    for line in timeline:
+        if line['account']['username'] != bot_acount_id:
+            f = open("toot.txt" , "a")
+            lists = (line['content'].replace("\n", ""))
+            f.write(lists)
+            f.flush()
+            f.close()
+
 def Mecab_file():
     f = open("toot.txt","r")
     data = f.read()
