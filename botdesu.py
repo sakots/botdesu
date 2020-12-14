@@ -212,6 +212,9 @@ def iraira_calc():
 iraira_calc()
 print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
 
+#ストリームの起動
+mstdn.stream_user(Stream())
+
 while True:
     see = 0
     while see < 10: 
@@ -229,8 +232,6 @@ while True:
         iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
         iraira_calc()
         print("***はつげんしたよ！***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
-        #ストリームの起動
-        mstdn.stream_user(Stream())
     else:
         muramura = (59 - random.randint(1,97))
         toot_count += muramura
