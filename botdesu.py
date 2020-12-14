@@ -44,11 +44,9 @@ class Stream(StreamListener):
         super(Stream, self).__init__()
 
     def on_notification(self,notif): #通知が来た時に呼び出して
-        if notif['type'] == 'mention': #通知の内容がリプライかチェック
-            content = notif['status']['content'] #リプライの本体
-            id = notif['status']['account']['username']
-            st = notif['status']
-            main(content, st, id)
+        if notif['type'] == 'mention': #通知の内容がメンションかチェック
+            content = notif['content'] #なかみ
+            main(content)
 
 
 try:
@@ -60,7 +58,7 @@ try:
 except NameError:
     iraira = random.randint(199,3571)
 
-def main(content,st,id):
+def main(content):
     req = content.rsplit(">")[-2].split("<")[0].strip() #リプライの本体から余分な情報を削る
     if "の画像" in req:
         ggrks = re.search(r'[\s|、(.*?)]の画像', req)
@@ -104,7 +102,7 @@ def _google_img_search(word):
     if not os.path.exists('imgs'):
         os.mkdir('imgs')
     
-    urlKeyword = parse.quote(word)
+    urlKeyword = format(quote(word))
     url = "https://www.google.com/search?as_st=y&tbm=isch&hl=ja&as_q=" + urlKeyword + "&as_epq=&as_oq=&as_eq=&imgsz=&imgar=&imgc=&imgcolor=&imgtype=&cr=&as_sitesearch=&safe=active&as_filetype=&tbs=qdr:w"
 
     headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
