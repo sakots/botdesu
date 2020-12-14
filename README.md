@@ -30,7 +30,7 @@
 ## 使い方（下準備）
 
 - MeCab
-  - インストール必須。mecab-ipadic-NEologdあたりの辞書を用意すると良いです。
+  - インストール必須。[mecab-ipadic-NEologd](https://qiita.com/ekzemplaro/items/c98c7f6698f130b55d53)あたりの辞書を用意すると良いです。
 - botをユーザー登録するためのマストドンアカウント
   - そりゃ必要ですわな。その後アカウント→開発から mastodon-api の `client_id` `access_token` `client_secret` あたりがないと動かないですよ。
 - .envファイルの設定
