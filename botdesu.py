@@ -135,7 +135,7 @@ def _google_img_search(word):
         
         try:
             img = req.urlopen(imageURL)
-            localfile = open('./img/'+str(imgcounter)+pal, 'wb')
+            localfile = open('./imgs/'+str(imgcounter)+pal, 'wb')
             localfile.write(img.read())
             img.close()
             localfile.close()
@@ -148,7 +148,7 @@ def _google_img_search(word):
             continue
         break
     #保存した画像からランダムで1枚選ぶ
-    random_file = random.choice(os.listdir("imgs"))
+    random_file = random.choice(os.listdir("./imgs"))
     imgpath = "./imgs/" + random_file
     file = [mstdn.media_post(random_file, mimetypes.guess_type(random_file)[0]) for random_file in imgpath]
     message = word + "ですよ"
