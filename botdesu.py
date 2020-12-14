@@ -46,7 +46,7 @@ class Stream(StreamListener):
     def on_notification(self,notif): #通知が来た時に呼び出して
         if notif['type'] == 'mention': #通知の内容がメンションかチェック
             content = notif['status']['content'] #なかみ
-            content = str(notif["content"])
+            content = str(notif['status']['content'])
             main(content)
 
 try:
