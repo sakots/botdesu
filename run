@@ -10,3 +10,5 @@ do
     fi
     sleep 600 #モニタ間隔（秒単位）
 done
+#こっちは落ちんやろ
+python3 botdesu_res.py
