@@ -60,18 +60,19 @@ except NameError:
     iraira = random.randint(199,3571)
 
 def main(content):
-    req = content.rsplit(">")[-2].split("<")[0].strip() #リプライの本体から余分な情報を削る
+    # リプライの本体から余分な情報を削る
+    req = content.rsplit(">")[-2].split("<")[0].strip() 
     if "のエロ" in req:
         yokunai = "いやえっちなのはよくない"
         mstdn.toot(yokunai)
     elif "の画像" in req:
-        ggrks = re.search(r'[\s|、](.*?)の画像', req)
-        qu = ggrks.group()
-        _google_img_search(qu)
+        ggrks = re.search(r'[\s|、|,]*.*?の画像', req)
+        que = re.sub(r'の画像', '', ggrks.group(0))
+        _google_img_search(que)
     elif "の絵" in req:
-        ggrks = re.search(r'[\s|、](.*?)の絵', req)
-        qu = ggrks.group()
-        _google_img_search(qu)
+        ggrks = re.search(r'[\s|、|,]*.*?の絵', req)
+        que = re.sub(r'の絵', '', ggrks.group(0))
+        _google_img_search(que)
     else:
         # 何でもないときはイライラ度を返す
         ggrks = "なん？　"
