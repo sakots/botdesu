@@ -1,15 +1,29 @@
 from requests_oauthlib import OAuth1Session
+import mimetypes
+import requests
 import json
 import sys
 import MeCab
 import random
 import re
-from mastodon import Mastodon
+from mastodon import Mastodon, StreamListener
 import os
 from dotenv import load_dotenv
 
 import datetime
 import time
+
+import bs4
+from bs4 import BeautifulSoup
+import urllib
+import urllib.request, urllib.error
+from urllib.request import urlopen, Request
+from urllib import request as req
+from urllib import error
+from urllib import parse
+from urllib.parse import quote
+
+from mimetypes import guess_extension
 
 # ボットデス by さこつ
 
@@ -24,6 +38,19 @@ mstdn = Mastodon(
 	client_secret = os.getenv('MASTODON_CLIENT_SECRET'),
     api_base_url = os.getenv('MASTODON_URL'))
 
+# リプライで送られてきた内容を元にAPIを叩いてその結果を返すクラス
+class Stream(StreamListener):
+    def __init__(self):
+        super(Stream, self).__init__()
+
+    def on_notification(self,notif): #通知が来た時に呼び出して
+        if notif['type'] == 'mention': #通知の内容がリプライかチェック
+            content = notif['status']['content'] #リプライの本体
+            id = notif['status']['account']['username']
+            st = notif['status']
+            main(content, st, id)
+
+
 try:
     toot_count
 except NameError:
@@ -32,6 +59,100 @@ try:
     iraira
 except NameError:
     iraira = random.randint(199,3571)
+
+def main(content,st,id):
+    req = content.rsplit(">")[-2].split("<")[0].strip() #リプライの本体から余分な情報を削る
+    if "の画像" in req:
+        ggrks = re.search(r'[\s|、(.*?)]の画像', req)
+    elif "の絵" in req:
+        ggrks = re.search(r'[\s|、(.*?)]の絵', req)
+    elif "ちょうだい" in req:
+        ggrks = re.search(r'[\s|、(.*?)]ちょうだい', req)
+    elif "ください" in req:
+        ggrks = re.search(r'[\s|、(.*?)]ください', req)
+    elif "くれ" in req:
+        ggrks = re.search(r'[\s|、(.*?)]くれ', req)
+    else:
+        # 何でもないときはイライラ度を返す
+        ggrks = "なん？　"
+        iraira_calc()
+        mstdn.toot(ggrks + "現在のイライラ度は" + iraira_rate)
+    # ググる
+    _google_img_search(ggrks)
+    #保存した画像からランダムで1枚選ぶ
+    random_file = random.choice(os.listdir("imgs"))
+    imgpath = "./imgs/" + random_file
+    file = [mstdn.media_post(random_file, mimetypes.guess_type(random_file)[0]) for random_file in imgpath]
+    message = ggrks + "ですよ"
+    mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
+    # いちおう未収載
+
+def _request(url):
+    # requestを処理しHTMLとcontent-typeを返す
+    req = Request(url)
+    try:
+        with urlopen(req, timeout=5) as p:
+             b_content = p.read()
+             mime = p.getheader('Content-Type')
+    except:
+        return None, None
+    return b_content, mime
+
+
+def _google_img_search(word):
+    # 画像保存ディレクトリがなかったらつくる
+    if not os.path.exists('imgs'):
+        os.mkdir('imgs')
+    
+    urlKeyword = parse.quote(word)
+    url = "https://www.google.com/search?as_st=y&tbm=isch&hl=ja&as_q=" + urlKeyword + "&as_epq=&as_oq=&as_eq=&imgsz=&imgar=&imgc=&imgcolor=&imgtype=&cr=&as_sitesearch=&safe=active&as_filetype=&tbs=qdr:w"
+
+    headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
+    request = req.Request(url=url, headers=headers)
+    page = req.urlopen(request)
+
+    html = page.read().decode('utf-8')
+    html = bs4.BeautifulSoup(html, "html.parser")
+    elems = html.select('.rg_meta.notranslate')
+
+    # 保存すっぞ
+    imgcounter = 0
+    for ele in elems:
+        ele = ele.contents[0].replace('"','').split(',')
+        eledict = dict()
+        for e in ele:
+            num = e.find(':')
+            eledict[e[0:num]] = e[num+1:]
+        imageURL = eledict['ou']
+
+        pal = '.jpg'
+        if '.jpg' in imageURL:
+            pal = '.jpg'
+        elif '.JPG' in imageURL:
+            pal = '.jpg'
+        elif '.png' in imageURL:
+            pal = '.png'
+        elif '.gif' in imageURL:
+            pal = '.gif'
+        elif '.jpeg' in imageURL:
+            pal = '.jpeg'
+        else:
+            pal = '.png'
+        
+        try:
+            img = req.urlopen(imageURL)
+            localfile = open('./img/'+str(imgcounter)+pal, 'wb')
+            localfile.write(img.read())
+            img.close()
+            localfile.close()
+            imgcounter += 1
+        except UnicodeEncodeError:
+            continue
+        except error.HTTPError:
+            continue
+        except error.URLError:
+            continue
+        break
 
 def job_a_search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
@@ -93,6 +214,9 @@ def iraira_calc():
 iraira_calc()
 print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
 
+#ストリームの起動
+mstdn.stream_user(Stream())
+
 while True:
     see = 0
     while see < 10: 
@@ -103,14 +227,18 @@ while True:
     job_a_search()
     toot_count += random.randint(97,311)
     iraira_calc()
-    print("***はつげんをひろったよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+    print("***トゥートひろった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
     if toot_count > iraira:
         job_b_toot()
         toot_count = random.randint(1,23)
         iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
         iraira_calc()
-        print("***はつげんしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+        print("***はつげんしたよ！***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
     else:
-        toot_count += (71 - random.randint(1,97))
+        muramura = (59 - random.randint(1,97))
+        toot_count += muramura
         iraira_calc()
-        print("***はつげんしたかったよ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+        if muramura > 0:
+            print("***イライラするよ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+        else:
+            print("***ムラムラ…ふぅ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
