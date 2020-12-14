@@ -1,4 +1,5 @@
 from requests_oauthlib import OAuth1Session
+import pathlib
 import json
 import sys
 import MeCab
@@ -26,9 +27,8 @@ mstdn = Mastodon(
 
 # 初回起動時とかtoot.txtがないときは作成して1回収集
 if not os.path.exists("toot.txt"):
-    fi = open("toot.txt",'w')
-    fi.write("")
-    fi.close()
+    touch_file = pathlib.Path("./toot.txt")
+    touch_file.touch()
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
     for line in timeline:
         if line['account']['username'] != bot_acount_id:
