@@ -25,10 +25,13 @@ mstdn = Mastodon(
 	client_secret = os.getenv('MASTODON_CLIENT_SECRET'),
     api_base_url = os.getenv('MASTODON_URL'))
 
-# 初回起動時とかtoot.txtがないときは作成して1回収集
+# 初回起動時とかtoot.txtがないときは作成
 if not os.path.exists("toot.txt"):
     touch_file = pathlib.Path("./toot.txt")
     touch_file.touch()
+
+# なんでかtoot.txtが空っぽの場合1回収集
+if os.stat("toot.txt").st_size == 0:
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
     for line in timeline:
         if line['account']['username'] != bot_acount_id:
