@@ -93,6 +93,8 @@ def _request(url):
 
 def _google_img_search(word):
     # 画像保存ディレクトリがなかったらつくる
+    # あっても消してつくる
+    shutil.rmtree('imgs')
     if not os.path.exists('imgs'):
         os.mkdir('imgs')
     
@@ -152,8 +154,6 @@ def _google_img_search(word):
     message = word + "ですよ"
     mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
     # いちおう未収載
-    # その後ファイル削除
-    shutil.rmtree("imgs")
 
 def job_a_search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
