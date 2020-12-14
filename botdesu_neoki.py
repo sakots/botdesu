@@ -26,9 +26,9 @@ mstdn = Mastodon(
 
 # 初回起動時とかtoot.txtがないときは作成して1回収集
 if not os.path.exists("toot.txt"):
-    f = open("toot.txt",'w')
-    f.write("")
-    f.close()
+    fi = open("toot.txt",'w')
+    fi.write("")
+    fi.close()
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
     for line in timeline:
         if line['account']['username'] != bot_acount_id:
