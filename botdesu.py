@@ -62,23 +62,11 @@ except NameError:
 def main(content):
     req = content.rsplit(">")[-2].split("<")[0].strip() #リプライの本体から余分な情報を削る
     if "の画像" in req:
-        ggrks = re.search(r'[\s|、(.*?)]の画像', req)
+        ggrks = re.search(r'[\s|、](.*?)の画像', req)
         qu = ggrks.group(0)
         _google_img_search(qu)
     elif "の絵" in req:
-        ggrks = re.search(r'[\s|、(.*?)]の絵', req)
-        qu = ggrks.group(0)
-        _google_img_search(qu)
-    elif "ちょうだい" in req:
-        ggrks = re.search(r'[\s|、(.*?)]ちょうだい', req)
-        qu = ggrks.group(0)
-        _google_img_search(qu)
-    elif "ください" in req:
-        ggrks = re.search(r'[\s|、(.*?)]ください', req)
-        qu = ggrks.group(0)
-        _google_img_search(qu)
-    elif "くれ" in req:
-        ggrks = re.search(r'[\s|、(.*?)]くれ', req)
+        ggrks = re.search(r'[\s|、](.*?)の絵', req)
         qu = ggrks.group(0)
         _google_img_search(qu)
     else:
