@@ -6,6 +6,7 @@ import sys
 import MeCab
 import random
 import re
+import shutil
 from mastodon import Mastodon, StreamListener
 import os
 from dotenv import load_dotenv
@@ -62,28 +63,29 @@ def main(content):
     req = content.rsplit(">")[-2].split("<")[0].strip() #リプライの本体から余分な情報を削る
     if "の画像" in req:
         ggrks = re.search(r'[\s|、(.*?)]の画像', req)
+        qu = ggrks.group(0)
+        _google_img_search(qu)
     elif "の絵" in req:
         ggrks = re.search(r'[\s|、(.*?)]の絵', req)
+        qu = ggrks.group(0)
+        _google_img_search(qu)
     elif "ちょうだい" in req:
         ggrks = re.search(r'[\s|、(.*?)]ちょうだい', req)
+        qu = ggrks.group(0)
+        _google_img_search(qu)
     elif "ください" in req:
         ggrks = re.search(r'[\s|、(.*?)]ください', req)
+        qu = ggrks.group(0)
+        _google_img_search(qu)
     elif "くれ" in req:
         ggrks = re.search(r'[\s|、(.*?)]くれ', req)
+        qu = ggrks.group(0)
+        _google_img_search(qu)
     else:
         # 何でもないときはイライラ度を返す
         ggrks = "なん？　"
         iraira_calc()
         mstdn.toot(ggrks + "現在のイライラ度は" + iraira_rate)
-    # ググる
-    _google_img_search(ggrks)
-    #保存した画像からランダムで1枚選ぶ
-    random_file = random.choice(os.listdir("imgs"))
-    imgpath = "./imgs/" + random_file
-    file = [mstdn.media_post(random_file, mimetypes.guess_type(random_file)[0]) for random_file in imgpath]
-    message = ggrks + "ですよ"
-    mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
-    # いちおう未収載
 
 def _request(url):
     # requestを処理しHTMLとcontent-typeを返す
@@ -151,6 +153,15 @@ def _google_img_search(word):
         except error.URLError:
             continue
         break
+    #保存した画像からランダムで1枚選ぶ
+    random_file = random.choice(os.listdir("imgs"))
+    imgpath = "./imgs/" + random_file
+    file = [mstdn.media_post(random_file, mimetypes.guess_type(random_file)[0]) for random_file in imgpath]
+    message = word + "ですよ"
+    mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
+    # いちおう未収載
+    # その後ファイル削除
+    shutil.rmtree("imgs")
 
 def job_a_search():
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
