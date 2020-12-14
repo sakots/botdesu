@@ -45,9 +45,9 @@ class Stream(StreamListener):
 
     def on_notification(self,notif): #通知が来た時に呼び出して
         if notif['type'] == 'mention': #通知の内容がメンションかチェック
-            content = notif['content'] #なかみ
+            content = notif['status']['content'] #なかみ
+            content = str(notif["content"])
             main(content)
-
 
 try:
     toot_count
@@ -102,7 +102,7 @@ def _google_img_search(word):
     if not os.path.exists('imgs'):
         os.mkdir('imgs')
     
-    urlKeyword = format(quote(word))
+    urlKeyword = parse.quote(word)
     url = "https://www.google.com/search?as_st=y&tbm=isch&hl=ja&as_q=" + urlKeyword + "&as_epq=&as_oq=&as_eq=&imgsz=&imgar=&imgc=&imgcolor=&imgtype=&cr=&as_sitesearch=&safe=active&as_filetype=&tbs=qdr:w"
 
     headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
@@ -212,9 +212,6 @@ def iraira_calc():
 iraira_calc()
 print("***ようすをみている***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
 
-#ストリームの起動
-mstdn.stream_user(Stream())
-
 while True:
     see = 0
     while see < 10: 
@@ -232,6 +229,8 @@ while True:
         iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
         iraira_calc()
         print("***はつげんしたよ！***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+        #ストリームの起動
+        mstdn.stream_user(Stream())
     else:
         muramura = (59 - random.randint(1,97))
         toot_count += muramura
