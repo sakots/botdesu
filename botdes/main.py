@@ -30,7 +30,7 @@ from urllib.parse import quote
 
 # ボットデスサブモジュール＆コンフィグ
 from botdes import irairacalc, config
-from irairacalc import iraira_rate, toot_count, iraira
+from botdes.irairacalc import iraira_rate, toot_count, iraira
 
 from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET,  MASTODON_URL
 
