@@ -6,6 +6,20 @@ import random
 
 # てきとうスケジューラー（イライラ管理）
 
+global iraira_rate, toot_count, iraira
+# イライラ定義
+try:
+    toot_count
+except NameError:
+    toot_count = random.randint(1,13)
+try:
+    iraira
+except NameError:
+    iraira = random.randint(199,3571)
+iraira_rate = float( toot_count / iraira ) * 100
+iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
+
+
 class Scheduler():
     def __init__(self, func, intvl):
         if intvl:
@@ -32,6 +46,10 @@ class Scheduler():
 class Ira():
     def __init__(self, func):
         self.ih = threading.Thread(target=self.iraira_rnd, args=func)
+    def iraira_calc(self):
+        global iraira_rate
+        iraira_rate = float( toot_count / iraira ) * 100
+        iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
     def iraira_rnd(self, func):
         while True:
             sleep(10)
@@ -48,19 +66,3 @@ class Ira():
                     print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
                 else:
                     print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
-
-    def iraira_calc(self):
-        global iraira_rate, toot_count, iraira
-        # イライラ定義
-        try:
-            toot_count
-        except NameError:
-            toot_count = random.randint(1,13)
-        try:
-            iraira
-        except NameError:
-            iraira = random.randint(199,3571)
-        iraira_rate = float( toot_count / iraira ) * 100
-        iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
-
-
