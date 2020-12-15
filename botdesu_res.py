@@ -1,4 +1,5 @@
 from botdesu import iraira_calc, iraira_rate
+
 from requests_oauthlib import OAuth1Session
 import mimetypes
 import requests
@@ -27,7 +28,7 @@ from urllib.parse import quote
 
 from mimetypes import guess_extension
 
-# ボットデスれすば対応 by さこつ
+# ボットデス　れすば対応 by さこつ
 
 # .envファイルの内容を読み込み
 load_dotenv()
@@ -47,8 +48,7 @@ class Stream(StreamListener):
 
     def on_notification(self,notif): #通知が来た時に呼び出して
         if notif['type'] == 'mention': #通知の内容がメンションかチェック
-            content = notif['status']['content'] #なかみ
-            content = str(notif['status']['content'])
+            content = str(notif['status']['content']) #なかみ
             main(content)
 
 def main(content):

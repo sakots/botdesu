@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#こっちは落ちんやろ　バックグラウンドで実行する
+python3 botdesu_res.py &
 while true
 do
     #botdesu.pyが何個起動しているかカウントする
@@ -10,5 +12,3 @@ do
     fi
     sleep 600 #モニタ間隔（秒単位）
 done
-#こっちは落ちんやろ
-python3 botdesu_res.py
