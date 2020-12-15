@@ -45,7 +45,7 @@ class Scheduler():
 
 class Ira():
     def __init__(self, func):
-        self.th = threading.Thread(target=self.iraira_rnd, args=func)
+        self.th = threading.Thread(target=self.iraira_rnd, args=(func,))
     def iraira_calc(self):
         global iraira_rate
         iraira_rate = float( toot_count / iraira ) * 100
