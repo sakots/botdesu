@@ -116,6 +116,6 @@ while True:
         toot_count += muramura
         iraira_calc()
         if muramura > 0:
-            print("***イライラするよ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+            print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
         else:
-            print("***ムラムラ…ふぅ…***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+            print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
