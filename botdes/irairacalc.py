@@ -45,7 +45,7 @@ class Scheduler():
 
 class Ira():
     def __init__(self, func):
-        self.ih = threading.Thread(target=self.iraira_rnd, args=func)
+        self.th = threading.Thread(target=self.iraira_rnd, args=func)
     def iraira_calc(self):
         global iraira_rate
         iraira_rate = float( toot_count / iraira ) * 100
@@ -66,3 +66,6 @@ class Ira():
                     print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
                 else:
                     print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_rate)
+
+    def start(self):
+        self.th.start()
