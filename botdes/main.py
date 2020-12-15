@@ -166,8 +166,10 @@ def _request(url):
 def _google_img_search(word):
     # 画像保存ディレクトリがなかったらつくる
     # あっても消してつくる
-    shutil.rmtree('imgs')
-    if not os.path.exists('imgs'):
+    if os.path.exists('imgs'):
+        shutil.rmtree('imgs')
+        os.mkdir('imgs')
+    else:
         os.mkdir('imgs')
     
     urlKeyword = parse.quote(word)

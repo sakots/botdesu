@@ -25,18 +25,16 @@ class Scheduler():
         if intvl:
             self.th = threading.Thread(target=self.scheduler, args=(func, intvl))
         else:
-            self.th = threading.Thread(target=self.scheduler_rnd, args=func)
+            self.th = threading.Thread(target=self.scheduler_rnd, args=(func,))
     
     def scheduler(self, func, intvl):
         #func:起動する処理
         while True:
-            sleep(10)
             func()
             sleep(intvl * 60)
     def scheduler_rnd(self, func):
         #func:起動する処理
         while True:
-            sleep(10)
             func()
             sleep(random.randint(1,173))
 
@@ -52,7 +50,6 @@ class Ira():
         iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
     def iraira_rnd(self, func):
         while True:
-            sleep(10)
             if toot_count > iraira:
                 toot_count = random.randint(1,23)
                 iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
