@@ -162,6 +162,10 @@ def th_job_a_search():
             f.close()
     print("***はつげんひろった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
 
+# 様子見
+def th_job_d_nnn():
+    print("***ようすをみている***")
+
 # 画像サーチ
 def img_ggrks(content):
     # リプライの本体から余分な情報を削る
@@ -204,7 +208,11 @@ def _yahoo_img_dl(word):
         os.mkdir('imgs')
     
     url = "https://search.yahoo.co.jp/image/search?p={}&ei=UTF-8&b=&vd=w".format(quote(word))
-    response = requests.get(url)
+    headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
+    request = req.Request(url=url, headers=headers)
+    page = req.urlopen(request)
+    html = page.read().decode('utf-8')
+    response = requests.get(html)
     img_src_list = []
     pattern = 'original":{"url":"' + '(.*?)' + '"'
     tmp_extracted_text_array = re.findall(pattern, response.text)
@@ -246,7 +254,8 @@ def run():
     # タイムライン受信系
     mstdn.stream_user(Stream(), run_async=True,timeout=180, reconnect_async=True, reconnect_async_wait_sec=5)
     #スケジュール起動系(間隔)
-    threads.append(scheduler.Scheduler(th_job_a_search, intvl=1))
+    threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
+    threads.append(scheduler.Scheduler(th_job_a_search, intvl=10))
     # てきとう発言系
     threads.append(scheduler.Scheduler(r_toot, intvl=5))
 
