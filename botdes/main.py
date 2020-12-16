@@ -30,8 +30,9 @@ from urllib.parse import quote
 
 # ボットデスサブモジュール＆コンフィグ
 from botdes import scheduler, config
+import botdes.config
 
-from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET, MASTODON_URL, iraira, toot_count
+from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET, MASTODON_URL
 
 bot_acount_id = BOT_ACOUNT_ID
 
@@ -73,24 +74,24 @@ def neoki():
 
 # イライラ管理
 def iraira_calc():
-    iraira_rating = float( toot_count / iraira ) * 100
+    iraira_rating = float( config.toot_count / config.iraira ) * 100
     iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
     return iraira_rate
 
 def r_toot():
-    if float( toot_count / iraira ) >= 1:
+    if float( config.toot_count / config.iraira ) >= 1:
         Mecab_file(r_toot)
-        toot_count = random.randint(1,23)
-        iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
-        print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+        config.toot_count = random.randint(1,23)
+        config.iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
+        print("***はつげんをしたよ***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
     else:
         muramura = (59 - random.randint(1,97))
-        toot_count += muramura
+        config.toot_count += muramura
         iraira_calc()
         if muramura > 0:
-            print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+            print("***イライラするよお***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
         else:
-            print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+            print("***ムラムラムラムラ***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
 
 # とぅーと
 def Mecab_file(n):
@@ -148,7 +149,7 @@ def th_job_a_search():
             f.write(lists)
             f.flush()
             f.close()
-    print("***はつげんひろった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+    print("***はつげんひろった***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
 
 # 様子見
 def th_job_d_nnn():
@@ -242,9 +243,9 @@ def run():
     mstdn.stream_user(Stream(), run_async=True,timeout=180, reconnect_async=True, reconnect_async_wait_sec=5)
     #スケジュール起動系(間隔)
     threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
-    threads.append(scheduler.Scheduler(th_job_a_search, intvl=10))
+    threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
     # てきとう発言系
-    threads.append(scheduler.Scheduler(r_toot, intvl=5))
+    threads.append(scheduler.Scheduler(r_toot, intvl=4))
 
     for th in threads:
         th.start()
