@@ -31,7 +31,7 @@ from urllib.parse import quote
 # ボットデスサブモジュール＆コンフィグ
 from botdes import scheduler, config
 
-from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET, MASTODON_URL
+from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET, MASTODON_URL, iraira, iraira_rate, iraira_rating, toot_count
 
 bot_acount_id = BOT_ACOUNT_ID
 
@@ -50,18 +50,6 @@ class Stream(StreamListener):
         if notifn['type'] == 'mention': #通知の内容がメンションかチェック
             content = str(notifn['status']['content']) #なかみ
             img_ggrks(content) #画像ぐぐれかす用
-
-# イライラ定義
-try:
-    toot_count
-except NameError:
-    toot_count = random.randint(1,13)
-try:
-    iraira
-except NameError:
-    iraira = random.randint(199,3571)
-iraira_rating = float( toot_count / iraira ) * 100
-iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
 
 def neoki():
     # 初回起動時とかtoot.txtがないときは作成
@@ -211,8 +199,7 @@ def _yahoo_img_dl(word):
     headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
     request = req.Request(url=url, headers=headers)
     page = req.urlopen(request)
-    html = page.decode('utf-8')
-    response = requests.get(html)
+    response = requests.get(page)
     img_src_list = []
     pattern = 'original":{"url":"' + '(.*?)' + '"'
     tmp_extracted_text_array = re.findall(pattern, response.text)

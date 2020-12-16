@@ -1,6 +1,13 @@
+import random
 # 接続情報（必須）
 BOT_ACOUNT_ID = 'botのアカウント名(@は不要)'
 MASTODON_URL = 'マストドンURL (例：https://exsample.net)'
 MASTODON_CLIENT_ID = 'クライアントID'
 MASTODON_CLIENT_SECRET = '何かとにかくこういう項目があった'
 MASTODON_ACCESS_TOKEN = 'これもこのままあったと思う'
+
+# イライラ定義
+toot_count = random.randint(1,13)
+iraira = random.randint(199,3571)
+iraira_rating = float( toot_count / iraira ) * 100
+iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
