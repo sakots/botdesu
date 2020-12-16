@@ -60,8 +60,8 @@ try:
     iraira
 except NameError:
     iraira = random.randint(199,3571)
-iraira_rate = float( toot_count / iraira ) * 100
-iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
+iraira_rating = float( toot_count / iraira ) * 100
+iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
 
 def neoki():
     # 初回起動時とかtoot.txtがないときは作成
