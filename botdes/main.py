@@ -51,6 +51,18 @@ class Stream(StreamListener):
             content = str(notifn['status']['content']) #なかみ
             img_ggrks(content) #画像ぐぐれかす用
 
+# イライラ定義
+try:
+    toot_count
+except NameError:
+    toot_count = random.randint(1,13)
+try:
+    iraira
+except NameError:
+    iraira = random.randint(199,3571)
+iraira_rate = float( toot_count / iraira ) * 100
+iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
+
 def neoki():
     # 初回起動時とかtoot.txtがないときは作成
     if not os.path.exists("toot.txt"):
@@ -228,20 +240,8 @@ def _yahoo_img_dl(word):
     # いちおう未収載でトゥート
 
 def run():
-    global toot_count, iraira, iraira_rate
     # 起動時に1回寝起きトゥート発動
     neoki()
-    # イライラ定義
-    try:
-        toot_count
-    except NameError:
-        toot_count = random.randint(1,13)
-    try:
-        iraira
-    except NameError:
-        iraira = random.randint(199,3571)
-    iraira_rate = float( toot_count / iraira ) * 100
-    iraira_rate = "{:.2f}".format(iraira_rate ) + "%" #strやで
     threads = []
     # タイムライン受信系
     mstdn.stream_user(Stream(), run_async=True,timeout=180, reconnect_async=True, reconnect_async_wait_sec=5)
