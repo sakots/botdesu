@@ -211,7 +211,7 @@ def _yahoo_img_dl(word):
     headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
     request = req.Request(url=url, headers=headers)
     page = req.urlopen(request)
-    html = page.read().decode('utf-8')
+    html = page.decode('utf-8')
     response = requests.get(html)
     img_src_list = []
     pattern = 'original":{"url":"' + '(.*?)' + '"'
