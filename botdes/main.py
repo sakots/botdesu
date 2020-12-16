@@ -31,7 +31,7 @@ from urllib.parse import quote
 # ボットデスサブモジュール＆コンフィグ
 from botdes import scheduler, config
 
-from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET, MASTODON_URL, iraira, iraira_rate, iraira_rating, toot_count
+from botdes.config import BOT_ACOUNT_ID, MASTODON_CLIENT_ID, MASTODON_ACCESS_TOKEN, MASTODON_CLIENT_SECRET, MASTODON_URL, iraira, toot_count
 
 bot_acount_id = BOT_ACOUNT_ID
 

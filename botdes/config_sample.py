@@ -9,5 +9,3 @@ MASTODON_ACCESS_TOKEN = 'これもこのままあったと思う'
 # イライラ定義
 toot_count = random.randint(1,13)
 iraira = random.randint(199,3571)
-iraira_rating = float( toot_count / iraira ) * 100
-iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
