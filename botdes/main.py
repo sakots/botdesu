@@ -77,6 +77,7 @@ def iradef():
     global toot_count, iraira
     toot_count = random.randint(1,13)
     iraira = random.randint(199,3571)
+    return toot_count, iraira
 
 # イライラ管理
 def iraira_calc():
