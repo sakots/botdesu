@@ -164,7 +164,7 @@ def th_job_a_search():
 # 様子見
 def th_job_d_nnn():
     global toot_count
-    toot_count += (random.randint(177,2011) - 1000)
+    toot_count += random.randint(177,211)
     print("***ようすをみている***")
 
 # 画像サーチ
@@ -224,12 +224,22 @@ def _yahoo_img_dl(word):
             pal = '.jpeg'
         else:
             pal = '.png'
-        img = urllib.request.urlopen(imageURL)
-        localfile = open('./imgs/' + str(imgnum)+pal, 'wb')
-        localfile.write(img.read())
-        img.close()
-        localfile.close()
-        imgnum += 1
+        
+        try:
+            img = urllib.request.urlopen(imageURL)
+            localfile = open('./imgs/' + str(imgnum)+pal, 'wb')
+            localfile.write(img.read())
+            img.close()
+            localfile.close()
+            imgnum += 1
+        except UnicodeEncodeError:
+            continue
+        except error.HTTPError:
+            mstdn.toot("ごめん検索しすぎで怒られた")
+        except error.URLError:
+            mstdn.toot("なんかダメだって")
+        break
+        
     #保存した画像からランダムで1枚選ぶ
     random_file = random.choice(os.listdir("./imgs"))
     imgpath = "./imgs/" + random_file
