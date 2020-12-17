@@ -81,11 +81,13 @@ def iradef():
 
 # イライラ管理
 def iraira_calc():
+    global toot_count, iraira
     iraira_rating = float( toot_count / iraira ) * 100
     iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
     return iraira_rate
 
 def th_r_toot():
+    global toot_count, iraira
     if float( toot_count / iraira ) >= 1:
         Mecab_file(th_r_toot)
         toot_count = random.randint(1,23)
@@ -148,6 +150,7 @@ def Mecab_file(n):
 
 # 発言拾う
 def th_job_a_search():
+    global toot_count, iraira
     timeline = mstdn.timeline_local(max_id=None, since_id=None, limit=40)
     for line in timeline:
         if line['account']['username'] != bot_acount_id:
@@ -164,6 +167,7 @@ def th_job_d_nnn():
 
 # 画像サーチ
 def img_ggrks(content):
+    global toot_count, iraira
     # リプライの本体から余分な情報を削る
     req = content.rsplit(">")[-2].split("<")[0].strip() 
     if "のエロ" in req:
