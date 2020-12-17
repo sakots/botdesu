@@ -86,22 +86,6 @@ def iraira_calc():
     iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
     return iraira_rate
 
-def th_r_toot():
-    global toot_count, iraira
-    if float( toot_count / iraira ) >= 1:
-        Mecab_file(th_r_toot)
-        toot_count = random.randint(1,23)
-        iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
-        print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
-    else:
-        muramura = (59 - random.randint(1,97))
-        toot_count += muramura
-        iraira_calc()
-        if muramura > 0:
-            print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
-        else:
-            print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
-
 # とぅーと
 def Mecab_file(n):
     f = open("toot.txt","r")
@@ -160,11 +144,25 @@ def th_job_a_search():
             f.flush()
             f.close()
     print("***はつげんひろった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+    # 発言拾った後イライラ度が100%以上ならしゃべる
+    if toot_count > iraira:
+        Mecab_file(iraira_calc())
+        toot_count = random.randint(1,23)
+        iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
+        print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+    else:
+        muramura = (59 - random.randint(1,97))
+        toot_count += muramura
+        iraira_calc()
+        if muramura > 0:
+            print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+        else:
+            print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
 
 # 様子見
 def th_job_d_nnn():
     global toot_count
-    toot_count += random.randint(177,211)
+    toot_count += (200 - random.randint(177,211))
     print("***ようすをみている***")
 
 # 画像サーチ
@@ -259,8 +257,6 @@ def run():
     #スケジュール起動系(間隔)
     threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
     threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
-    # てきとう発言系
-    threads.append(scheduler.Scheduler(th_r_toot, intvl=10))
 
     for th in threads:
         th.start()
