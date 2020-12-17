@@ -188,16 +188,6 @@ def img_ggrks(content):
         mstdn.toot(_toot)
 
 #画像検索本体
-def _request(url):
-    # requestを処理しHTMLとcontent-typeを返す
-    req = Request(url)
-    try:
-        with urlopen(req, timeout=5) as p:
-            b_content = p.read()
-            mime = p.getheader('Content-Type')
-    except:
-        return None, None
-    return b_content, mime
 def _yahoo_img_dl(word):
     # 画像保存ディレクトリがなかったらつくる
     # あっても消してつくる
@@ -208,10 +198,10 @@ def _yahoo_img_dl(word):
         os.mkdir('imgs')
     
     url = "https://search.yahoo.co.jp/image/search?p={}&ei=UTF-8&b=&vd=w".format(quote(word))
-    headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
-    request = req.Request(url=url, headers=headers)
-    page = req.urlopen(request)
-    response = requests.get(page)
+    #headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
+    #request = req.Request(url=url, headers=headers)
+    #page = req.urlopen(request)
+    response = requests.get(url)
     img_src_list = []
     pattern = 'original":{"url":"' + '(.*?)' + '"'
     tmp_extracted_text_array = re.findall(pattern, response.text)
