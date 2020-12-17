@@ -163,6 +163,8 @@ def th_job_a_search():
 
 # 様子見
 def th_job_d_nnn():
+    global toot_count
+    toot_count += (random.randint(177,2011) - 200)
     print("***ようすをみている***")
 
 # 画像サーチ
@@ -231,7 +233,7 @@ def _yahoo_img_dl(word):
     #保存した画像からランダムで1枚選ぶ
     random_file = random.choice(os.listdir("./imgs"))
     imgpath = "./imgs/" + random_file
-    file = [mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0]) for random_file in random_file]
+    file = mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0])
     message = word + "ですよ"
     mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
     # いちおう未収載でトゥート
