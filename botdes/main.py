@@ -162,7 +162,7 @@ def th_job_a_search():
 # 様子見
 def th_job_d_nnn():
     global toot_count
-    toot_count += (317 - random.randint(1,211))
+    toot_count += random.randint(21,71)
     print("***ようすをみている***")
 
 # 画像サーチ
