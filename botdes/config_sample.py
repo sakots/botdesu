@@ -5,7 +5,3 @@ MASTODON_URL = 'マストドンURL (例：https://exsample.net)'
 MASTODON_CLIENT_ID = 'クライアントID'
 MASTODON_CLIENT_SECRET = '何かとにかくこういう項目があった'
 MASTODON_ACCESS_TOKEN = 'これもこのままあったと思う'
-
-# イライラ定義
-toot_count = random.randint(1,13)
-iraira = random.randint(199,3571)

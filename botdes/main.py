@@ -72,26 +72,32 @@ def neoki():
     Mecab_file(neoki)
     print("***寝起きトゥート！***")
 
+# イライラ定義
+def iradef():
+    global toot_count, iraira
+    toot_count = random.randint(1,13)
+    iraira = random.randint(199,3571)
+
 # イライラ管理
 def iraira_calc():
-    iraira_rating = float( config.toot_count / config.iraira ) * 100
+    iraira_rating = float( toot_count / iraira ) * 100
     iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
     return iraira_rate
 
 def r_toot():
-    if float( config.toot_count / config.iraira ) >= 1:
+    if float( toot_count / iraira ) >= 1:
         Mecab_file(r_toot)
-        config.toot_count = random.randint(1,23)
-        config.iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
-        print("***はつげんをしたよ***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
+        toot_count = random.randint(1,23)
+        iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
+        print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
     else:
         muramura = (59 - random.randint(1,97))
-        config.toot_count += muramura
+        toot_count += muramura
         iraira_calc()
         if muramura > 0:
-            print("***イライラするよお***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
+            print("***イライラするよお***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
         else:
-            print("***ムラムラムラムラ***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
+            print("***ムラムラムラムラ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
 
 # とぅーと
 def Mecab_file(n):
@@ -149,7 +155,7 @@ def th_job_a_search():
             f.write(lists)
             f.flush()
             f.close()
-    print("***はつげんひろった***" + " - c[" + str(config.toot_count) + "]:" + "i[" + str(config.iraira) + "] イライラ度 " + iraira_calc())
+    print("***はつげんひろった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
 
 # 様子見
 def th_job_d_nnn():
@@ -238,6 +244,8 @@ def _yahoo_img_dl(word):
 def run():
     # 起動時に1回寝起きトゥート発動
     neoki()
+    # イライラ定義
+    iradef()
     threads = []
     # タイムライン受信系
     mstdn.stream_user(Stream(), run_async=True,timeout=180, reconnect_async=True, reconnect_async_wait_sec=5)
