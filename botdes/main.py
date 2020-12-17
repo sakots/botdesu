@@ -164,7 +164,7 @@ def th_job_a_search():
 # 様子見
 def th_job_d_nnn():
     global toot_count
-    toot_count += (random.randint(177,2011) - 200)
+    toot_count += (random.randint(177,2011) - 1000)
     print("***ようすをみている***")
 
 # 画像サーチ
@@ -250,7 +250,7 @@ def run():
     threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
     threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
     # てきとう発言系
-    threads.append(scheduler.Scheduler(th_r_toot, intvl=4))
+    threads.append(scheduler.Scheduler(th_r_toot, intvl=10))
 
     for th in threads:
         th.start()
