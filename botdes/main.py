@@ -85,9 +85,9 @@ def iraira_calc():
     iraira_rate = "{:.2f}".format(iraira_rating) + "%" #strやで
     return iraira_rate
 
-def r_toot():
+def th_r_toot():
     if float( toot_count / iraira ) >= 1:
-        Mecab_file(r_toot)
+        Mecab_file(th_r_toot)
         toot_count = random.randint(1,23)
         iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
         print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
@@ -254,7 +254,7 @@ def run():
     threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
     threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
     # てきとう発言系
-    threads.append(scheduler.Scheduler(r_toot, intvl=4))
+    threads.append(scheduler.Scheduler(th_r_toot, intvl=4))
 
     for th in threads:
         th.start()
