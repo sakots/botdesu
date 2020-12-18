@@ -146,7 +146,7 @@ def th_job_a_search():
     print("***はつげんひろった***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
     # 発言拾った後イライラ度が100%以上ならしゃべる
     if toot_count > iraira:
-        Mecab_file(iraira_calc())
+        Mecab_file(iraira)
         toot_count = random.randint(1,23)
         iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
         print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
