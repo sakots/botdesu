@@ -148,7 +148,11 @@ def th_job_a_search():
     if toot_count > iraira:
         Mecab_file(iraira)
         toot_count = random.randint(1,23)
-        iraira = random.randint(random.randint(1,2011),random.randint(1033,5005))
+        ira_x = random.randint(1,2011)
+        ira_y = random.randint(1033,5005)
+        if ira_x > ira_y:
+            ira_x = ira_x - ira_y
+        iraira = random.randint(ira_x,ira_y)
         print("***はつげんをしたよ***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
     else:
         muramura = (59 - random.randint(1,97))
