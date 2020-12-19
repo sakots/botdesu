@@ -74,10 +74,11 @@ def neoki():
 
 # イライラ定義
 def iradef():
-    global toot_count, iraira
+    global toot_count, iraira, searchcount
     toot_count = random.randint(1,13)
     iraira = random.randint(199,3571)
-    return toot_count, iraira
+    searchcount = 12
+    return toot_count, iraira, searchcount
 
 # イライラ管理
 def iraira_calc():
@@ -88,6 +89,7 @@ def iraira_calc():
 
 # とぅーと
 def Mecab_file(n):
+    global threads
     f = open("toot.txt","r")
     data = f.read()
     f.close()
@@ -133,7 +135,6 @@ def Mecab_file(n):
     try:
         mstdn.toot(words)
     except:
-        threads = []
         threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
         toot_count = random.randint(1,23)
         ira_x = random.randint(1,2011)
@@ -180,30 +181,43 @@ def th_job_d_nnn():
     toot_count += random.randint(21,71)
     print("***ようすをみている***")
 
+# あんまり検索しすぎないようにカウントする
+def th_job_e_searchcount():
+    global searchcount
+    searchcount += 1
+
 # 画像サーチ
 def img_ggrks(content):
-    global toot_count, iraira
-    # リプライの本体から余分な情報を削る
-    req = content.rsplit(">")[-2].split("<")[0].strip() 
-    if "のエロ" in req:
-        _toot = "いやえっちなのはよくない"
-        mstdn.toot(_toot)
-    elif "の画像" in req:
-        ggrks = re.search(r'[\s|、|,]*.*?の画像', req)
-        que = re.sub(r'の画像', '', ggrks.group(0))
-        _yahoo_img_dl(que)
-    elif "の絵" in req:
-        ggrks = re.search(r'[\s|、|,]*.*?の絵', req)
-        que = re.sub(r'の絵', '', ggrks.group(0))
-        _yahoo_img_dl(que)
+    global toot_count, iraira, searchcount
+    # 検索しまくってたらそもそも検索しない
+    if searchcount < 10:
+        mstdn.toot("検索しすぎると怒られるからもうちょっと待って")
     else:
-        # 何でもないときはイライラ度を返す
-        ggrks = "なん？　"
-        _toot = ggrks + "現在のイライラ度は" + iraira_calc()
-        mstdn.toot(_toot)
+        # リプライの本体から余分な情報を削る
+        req = content.rsplit(">")[-2].split("<")[0].strip() 
+        if "のエロ" in req:
+            _toot = "いやえっちなのはよくない"
+            mstdn.toot(_toot)
+        elif "えっち" in req:
+            _toot = "いやえっちなのはよくない"
+            mstdn.toot(_toot)
+        elif "の画像" in req:
+            ggrks = re.search(r'[\s|、|,]*.*?の画像', req)
+            que = re.sub(r'の画像', '', ggrks.group(0))
+            _yahoo_img_dl(que)
+        elif "の絵" in req:
+            ggrks = re.search(r'[\s|、|,]*.*?の絵', req)
+            que = re.sub(r'の絵', '', ggrks.group(0))
+            _yahoo_img_dl(que)
+        else:
+            # 何でもないときはイライラ度を返す
+            ggrks = "なん？　"
+            _toot = ggrks + "現在のイライラ度は" + iraira_calc()
+            mstdn.toot(_toot)
 
 #画像検索本体
 def _yahoo_img_dl(word):
+    global searchcount
     # 画像保存ディレクトリがなかったらつくる
     # あっても消してつくる
     if os.path.exists('imgs'):
@@ -258,13 +272,16 @@ def _yahoo_img_dl(word):
     imgpath = "./imgs/" + random_file
     file = mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0])
     message = word + "ですよ"
-    mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
     # いちおう未収載でトゥート
+    mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
+    # 検索カウンターリセット
+    searchcount = 0
 
 def run():
+    global threads
     # 起動時に1回寝起きトゥート発動
     neoki()
-    # イライラ定義
+    # イライラ定義、サーチカウント定義
     iradef()
     threads = []
     # タイムライン受信系
@@ -272,6 +289,7 @@ def run():
     #スケジュール起動系(間隔)
     threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
     threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
+    threads.append(scheduler.Scheduler(th_job_e_searchcount, intvl=6))
 
     for th in threads:
         th.start()
