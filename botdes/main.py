@@ -89,7 +89,7 @@ def iraira_calc():
 
 # とぅーと
 def Mecab_file(n):
-    global threads
+    global threads, toot_count, iraira
     f = open("toot.txt","r")
     data = f.read()
     f.close()
