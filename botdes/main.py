@@ -97,7 +97,7 @@ def Mecab_file(n):
     mt = MeCab.Tagger("-Owakati")
  
     wordlist = mt.parse(data)
-    wordlist = wordlist.rstrip(" \n").split(" ")
+    wordlist = wordlist.replace(" \n"," ")
  
     markov = {}
     w = ""
@@ -289,7 +289,7 @@ def run():
     #スケジュール起動系(間隔)
     threads.append(scheduler.Scheduler(th_job_d_nnn, intvl=1))
     threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
-    threads.append(scheduler.Scheduler(th_job_e_searchcount, intvl=6))
+    threads.append(scheduler.Scheduler(th_job_e_searchcount, intvl=5))
 
     for th in threads:
         th.start()
