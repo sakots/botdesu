@@ -97,52 +97,60 @@ def Mecab_file(n):
     mt = MeCab.Tagger("-Owakati")
  
     wordlist = mt.parse(data)
-    wordlist = wordlist.replace(" \n"," ")
- 
-    markov = {}
-    w = ""
- 
-    for x in wordlist:
-        if w:
-            if w in markov:
-                new_list = markov[w]
-            else:
-                new_list =[]
- 
-            new_list.append(x)
-            markov[w] = new_list
-        w = x
- 
-    choice_words = wordlist[0]
-    sentence = ""
-    count = 0
-
-    if n == neoki:
-        numm = random.randint(13,77)
-    else:
-        numm = random.randint(31,56)
-    
-    while count < numm:
-        sentence += choice_words
-        choice_words = random.choice(markov[choice_words])
-        count += 1
- 
-        sentence = sentence.split(" ", 1)[0]
-        p = re.compile("[!-/:-@[-`{-~]")
-        sus = p.sub("", sentence)
- 
-    words = re.sub(re.compile("[!-~]"),"",sus)
     try:
-        mstdn.toot(words)
+        wordlist = wordlist.rstrip(" \n").split(" ")
     except:
-        threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
-        toot_count = random.randint(1,23)
-        ira_x = random.randint(1,2011)
-        ira_y = random.randint(1033,5005)
-        if ira_x > ira_y:
-            ira_x = ira_x - ira_y
-        iraira = random.randint(ira_x,ira_y)
-        print("***エラーで再起動！***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
+        # 発言集がなんかおかしいので消す（力業）
+        os.remove("toot.txt")
+        f = open('toot.txt','w')
+        # 1回収集
+        th_job_a_search()
+    else:
+ 
+        markov = {}
+        w = ""
+ 
+        for x in wordlist:
+            if w:
+                if w in markov:
+                    new_list = markov[w]
+                else:
+                    new_list =[]
+ 
+                new_list.append(x)
+                markov[w] = new_list
+            w = x
+ 
+        choice_words = wordlist[0]
+        sentence = ""
+        count = 0
+
+        if n == neoki:
+            numm = random.randint(13,77)
+        else:
+            numm = random.randint(31,56)
+    
+        while count < numm:
+            sentence += choice_words
+            choice_words = random.choice(markov[choice_words])
+            count += 1
+ 
+            sentence = sentence.split(" ", 1)[0]
+            p = re.compile("[!-/:-@[-`{-~]")
+            sus = p.sub("", sentence)
+    
+        words = re.sub(re.compile("[!-~]"),"",sus)
+        try:
+            mstdn.toot(words)
+        except:
+            threads.append(scheduler.Scheduler(th_job_a_search, intvl=8))
+            toot_count = random.randint(1,23)
+            ira_x = random.randint(1,2011)
+            ira_y = random.randint(1033,5005)
+            if ira_x > ira_y:
+                ira_x = ira_x - ira_y
+            iraira = random.randint(ira_x,ira_y)
+            print("***エラーで再起動！***" + " - c[" + str(toot_count) + "]:" + "i[" + str(iraira) + "] イライラ度 " + iraira_calc())
 
 # 発言拾う
 def th_job_a_search():
