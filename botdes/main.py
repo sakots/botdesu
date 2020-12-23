@@ -203,7 +203,7 @@ def img_ggrks(content):
     else:
         # リプライの本体から余分な情報を削る
         req = content.rsplit(">")[-2].split("<")[0].strip() 
-        if "のエロ" in req:
+        if "エロ" in req:
             _toot = "いやえっちなのはよくない"
             mstdn.toot(_toot)
         elif "えっち" in req:
@@ -212,6 +212,10 @@ def img_ggrks(content):
         elif "の画像" in req:
             ggrks = re.search(r'[\s|、|,]*.*?の画像', req)
             que = re.sub(r'の画像', '', ggrks.group(0))
+            _yahoo_img_dl(que)
+        elif "画像" in req:
+            ggrks = re.search(r'[\s|、|,]*.*?画像', req)
+            que = re.sub(r'画像', '', ggrks.group(0))
             _yahoo_img_dl(que)
         elif "の絵" in req:
             ggrks = re.search(r'[\s|、|,]*.*?の絵', req)
@@ -275,15 +279,18 @@ def _yahoo_img_dl(word):
             mstdn.toot("なんかダメだって")
         break
         
-    #保存した画像からランダムで1枚選ぶ
-    random_file = random.choice(os.listdir("./imgs"))
-    imgpath = "./imgs/" + random_file
-    file = mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0])
-    message = word + "ですよ"
-    # いちおう未収載でトゥート
-    mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
-    # 検索カウンターリセット
-    searchcount = 0
+    #保存した画像からランダムで1枚選ぶ 0枚の時は画像が見当たらないってことで。
+    try:
+        random_file = random.choice(os.listdir("./imgs"))
+        imgpath = "./imgs/" + random_file
+        file = mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0])
+        message = word + "ですよ"
+        # いちおう未収載でトゥート
+        mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
+        # 検索カウンターリセット
+        searchcount = 0
+    except:
+        mstdn.toot("画像探せんかったわ")
 
 def run():
     global threads
