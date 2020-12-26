@@ -7,7 +7,6 @@ import pathlib
 import json
 import sys
 import MeCab
-import glob
 import random
 import threading
 
@@ -282,8 +281,7 @@ def _yahoo_img_dl(word):
         
     #保存した画像からランダムで1枚選ぶ 0枚の時は画像が見当たらないってことで。
     try:
-        randomfiles = [r.split('/')[-1] for r in glob.glob("./imgs")]
-        random_file = random.choice(randomfiles)
+        random_file = random.choice(os.listdir("./imgs"))
         imgpath = "./imgs/" + random_file
         file = mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0])
         message = word + "ですよ"
