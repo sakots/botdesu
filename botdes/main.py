@@ -198,7 +198,7 @@ def th_job_e_searchcount():
 def img_ggrks(content):
     global toot_count, iraira, searchcount
     # 検索しまくってたらそもそも検索しない
-    if searchcount < 10:
+    if searchcount < 8:
         mstdn.toot("検索しすぎると怒られるからもうちょっと待って")
     else:
         # リプライの本体から余分な情報を削る
@@ -277,7 +277,7 @@ def _yahoo_img_dl(word):
             mstdn.toot("ごめん検索しすぎで怒られた")
         except error.URLError:
             mstdn.toot("なんかダメだって")
-        break
+            break
         
     #保存した画像からランダムで1枚選ぶ 0枚の時は画像が見当たらないってことで。
     try:
