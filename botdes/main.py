@@ -274,8 +274,11 @@ def _yahoo_img_dl(word):
         except UnicodeEncodeError:
             continue
         except error.HTTPError:
-            mstdn.toot("ごめん検索しすぎで怒られた")
-            break
+            if imgnum > 0:
+                break
+            else:
+                mstdn.toot("ごめん検索しすぎで怒られた")
+                break
         except error.URLError:
             mstdn.toot("なんかダメだって")
             break
