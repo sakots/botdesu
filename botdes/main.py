@@ -50,7 +50,8 @@ class Stream(StreamListener):
     def on_notification(self,notifn): #通知が来た時に呼び出して
         if notifn['type'] == 'mention': #通知の内容がメンションかチェック
             content = str(notifn['status']['content']) #なかみ
-            img_ggrks(content) #画像ぐぐれかす用
+            user_id = "@" + str(notifn['account']['username']) + " " #送ってきたユーザー
+            img_ggrks(content, user_id) #画像ぐぐれかす用
 
 def neoki():
     # 初回起動時とかtoot.txtがないときは作成
@@ -68,7 +69,7 @@ def neoki():
                 f.write(lists)
                 f.flush()
                 f.close()
-    
+
     Mecab_file(neoki)
     print("***寝起きトゥート！***")
 
@@ -93,9 +94,9 @@ def Mecab_file(n):
     f = open("toot.txt","r")
     data = f.read()
     f.close()
- 
+
     mt = MeCab.Tagger("-Owakati")
- 
+
     wordlist = mt.parse(data)
     try:
         wordlist = wordlist.rstrip(" \n").split(" ")
@@ -106,21 +107,21 @@ def Mecab_file(n):
         # 1回収集
         th_job_a_search()
     else:
- 
+
         markov = {}
         w = ""
- 
+
         for x in wordlist:
             if w:
                 if w in markov:
                     new_list = markov[w]
                 else:
                     new_list =[]
- 
+
                 new_list.append(x)
                 markov[w] = new_list
             w = x
- 
+
         choice_words = wordlist[0]
         sentence = ""
         count = 0
@@ -129,16 +130,16 @@ def Mecab_file(n):
             numm = random.randint(13,77)
         else:
             numm = random.randint(31,56)
-    
+
         while count < numm:
             sentence += choice_words
             choice_words = random.choice(markov[choice_words])
             count += 1
- 
+
             sentence = sentence.split(" ", 1)[0]
             p = re.compile("[!-/:-@[-`{-~]")
             sus = p.sub("", sentence)
-    
+
         words = re.sub(re.compile("[!-~]"),"",sus)
         try:
             mstdn.toot(words)
@@ -195,40 +196,41 @@ def th_job_e_searchcount():
     searchcount += 1
 
 # 画像サーチ
-def img_ggrks(content):
+def img_ggrks(content, user_id):
     global toot_count, iraira, searchcount
+
     # 検索しまくってたらそもそも検索しない
     if searchcount < 8:
-        mstdn.toot("検索しすぎると怒られるからもうちょっと待って")
+        mstdn.status_post(status = "検索しすぎると怒られるからもうちょっと待って", visibility='unlisted')
     else:
         # リプライの本体から余分な情報を削る
-        req = content.rsplit(">")[-2].split("<")[0].strip() 
+        req = content.rsplit(">")[-2].split("<")[0].strip()
         if "エロ" in req:
-            _toot = "いやえっちなのはよくない"
-            mstdn.toot(_toot)
+            _toot = user_id + "いやえっちなのはよくない"
+            mstdn.status_post(status = _toot, visibility='unlisted')
         elif "えっち" in req:
-            _toot = "いやえっちなのはよくない"
-            mstdn.toot(_toot)
+            _toot = user_id + "いやえっちなのはよくない"
+            mstdn.status_post(status = _toot, visibility='unlisted')
         elif "の画像" in req:
             ggrks = re.search(r'[\s|、|,]*.*?の画像', req)
             que = re.sub(r'の画像', '', ggrks.group(0))
-            _yahoo_img_dl(que)
+            _yahoo_img_dl(que, user_id)
         elif "画像" in req:
             ggrks = re.search(r'[\s|、|,]*.*?画像', req)
             que = re.sub(r'画像', '', ggrks.group(0))
-            _yahoo_img_dl(que)
+            _yahoo_img_dl(que, user_id)
         elif "の絵" in req:
             ggrks = re.search(r'[\s|、|,]*.*?の絵', req)
             que = re.sub(r'の絵', '', ggrks.group(0))
-            _yahoo_img_dl(que)
+            _yahoo_img_dl(que, user_id)
         else:
             # 何でもないときはイライラ度を返す
-            ggrks = "なん？　"
+            ggrks = "なん？  "
             _toot = ggrks + "現在のイライラ度は" + iraira_calc()
             mstdn.toot(_toot)
 
 #画像検索本体
-def _yahoo_img_dl(word):
+def _yahoo_img_dl(word, user_id):
     global searchcount
     # 画像保存ディレクトリがなかったらつくる
     # あっても消してつくる
@@ -237,7 +239,7 @@ def _yahoo_img_dl(word):
         os.mkdir('imgs')
     else:
         os.mkdir('imgs')
-    
+
     url = "https://search.yahoo.co.jp/image/search?p={}&ei=UTF-8&b=&vd=w".format(quote(word))
     #headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0",}
     #request = req.Request(url=url, headers=headers)
@@ -263,7 +265,7 @@ def _yahoo_img_dl(word):
             pal = '.jpeg'
         else:
             pal = '.png'
-        
+
         try:
             img = urllib.request.urlopen(imageURL)
             localfile = open('./imgs/' + str(imgnum)+pal, 'wb')
@@ -277,24 +279,27 @@ def _yahoo_img_dl(word):
             if imgnum > 0:
                 break
             else:
-                mstdn.toot("ごめん検索しすぎで怒られた")
+                _toot = user_id + "ごめん検索しすぎで怒られた"
+                mstdn.status_post(status = _toot, visibility='unlisted')
                 break
         except error.URLError:
-            mstdn.toot("なんかダメだって")
+            _toot = user_id + "なんかダメだって"
+            mstdn.status_post(status = _toot, visibility='unlisted')
             break
-        
+
     #保存した画像からランダムで1枚選ぶ 0枚の時は画像が見当たらないってことで。
     try:
         random_file = random.choice(os.listdir("./imgs"))
         imgpath = "./imgs/" + random_file
         file = mstdn.media_post(imgpath, mimetypes.guess_type(imgpath)[0])
-        message = word + "ですよ"
+        message = user_id + word + "ですよ"
         # いちおう未収載でトゥート
         mstdn.status_post(status = message, media_ids = file, visibility='unlisted')
         # 検索カウンターリセット
         searchcount = 0
     except:
-        mstdn.toot("画像探せんかったわ")
+        _toot = user_id + "画像探せんかったわ"
+        mstdn.status_post(status = _toot, visibility='unlisted')
 
 def run():
     global threads
