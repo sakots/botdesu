@@ -246,7 +246,7 @@ def _yahoo_img_dl(word, user_id):
     #page = req.urlopen(request)
     response = requests.get(url)
     img_src_list = []
-    pattern = 'original":{"url":"' + '(.*?)' + '"'
+    pattern = '<img src="' + '(.*?)' + '"'
     tmp_extracted_text_array = re.findall(pattern, response.text)
     img_src_list.extend(tmp_extracted_text_array)
     # 画像ダウンロード
